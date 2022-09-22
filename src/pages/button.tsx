@@ -1,15 +1,21 @@
 import { Button, Group } from "@mantine/core"
 import { Layout } from "../components/Layout"
 import { BrandGithub, ThreeDCubeSphere } from "tabler-icons-react"
+import Link from "next/link"
+import { ReplyIcon } from "@heroicons/react/solid"
+import { NextPage } from "next"
 
 // Group は、position, gap, alignItems
 // Button は色々カスタマイズ出来る
 // classNames で、内部の階層のスタイルを当てられる
 
-const ButtonDemo = () => {
+const ButtonDemo: NextPage = () => {
   return (
     <Layout>
       <Group position='center' direction='column' spacing={5} align=''>
+        <Link href='/'>
+          <ReplyIcon className='h-6 mt-4 text-gray-100 w-6' />
+        </Link>
         <Button onClick={() => alert("anpan")}>Press!</Button>
         <Button
           uppercase
