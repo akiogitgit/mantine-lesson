@@ -1,5 +1,7 @@
 import React from "react"
 import { Table } from "@mantine/core"
+import { Settings } from "tabler-icons-react"
+import { IconSettings, IconPacman, IconToolsKitchen2 } from "@tabler/icons"
 
 const TableDemo = () => {
   // const rows = elements.map(element => (
@@ -13,6 +15,11 @@ const TableDemo = () => {
 
   return (
     <div>
+      {/* <pacman */}
+      <Settings />
+      <IconSettings />
+      <IconPacman />
+      <IconToolsKitchen2 />
       <img src='https://source.unsplash.com/Qrk03uqLuME' />
       <iframe
         id='player'
