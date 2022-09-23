@@ -1,5 +1,6 @@
 // rafce
-import { Grid, Group, Button } from "@mantine/core"
+import { Grid, Group, Button, Center } from "@mantine/core"
+import Link from "next/link"
 import { Layout } from "../components/Layout"
 
 // Grid の子供に、Grid.Colがある

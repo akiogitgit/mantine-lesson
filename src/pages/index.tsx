@@ -18,6 +18,9 @@ const Home: NextPage = () => {
         <Link href='/grid' className='text-white'>
           <a>grid</a>
         </Link>
+        <Link href='/form' className='text-white'>
+          <a>form</a>
+        </Link>
       </Group>
     </Layout>
   )

@@ -1,8 +1,6 @@
 import { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { Center, Button, Group } from "@mantine/core"
-import { ReplyIcon } from "@heroicons/react/solid"
-import Link from "next/link"
 
 // position="center" 中央
 // position="apart" justify-between
@@ -66,25 +64,6 @@ const GroupDemo: NextPage = () => {
         <Button color='orange' className='h-20'>
           button3
         </Button>
-      </Group>
-
-      {/* 中央寄せ */}
-      <Center>
-        <Link href='/'>
-          <ReplyIcon className='cursor-pointer h-6 w-6' />
-        </Link>
-      </Center>
-
-      <div className='flex justify-center'>
-        <Link href='/'>
-          <ReplyIcon className='cursor-pointer h-6 w-6' />
-        </Link>
-      </div>
-
-      <Group position='center'>
-        <Link href='/'>
-          <ReplyIcon className='cursor-pointer h-6 w-6' />
-        </Link>
       </Group>
     </Layout>
   )
