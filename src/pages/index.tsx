@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div>aaa</div>
-      <Group direction='column' spacing={2}>
+      <Group direction='column' align='center' spacing={2}>
         <Link href='/button' className='text-white'>
           <a>button</a>
         </Link>
