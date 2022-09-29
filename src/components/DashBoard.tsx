@@ -41,18 +41,24 @@ export const Dashboard = () => {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>UI Components</Menu.Label>
-              {["button", "group", "grid", "table", "form", "multi-select"].map(
-                path => (
-                  <Menu.Item
-                    key={path}
-                    component={NextLink}
-                    href={`/${path}`}
-                    icon={<Settings size={16} />}
-                  >
-                    <Text transform='capitalize'>{path}</Text>
-                  </Menu.Item>
-                ),
-              )}
+              {[
+                "button",
+                "group",
+                "grid",
+                "table",
+                "form",
+                "multi-select",
+                "fetch-data",
+              ].map(path => (
+                <Menu.Item
+                  key={path}
+                  component={NextLink}
+                  href={`/${path}`}
+                  icon={<Settings size={16} />}
+                >
+                  <Text transform='capitalize'>{path}</Text>
+                </Menu.Item>
+              ))}
             </Menu.Dropdown>
           </Menu>
         </div>
