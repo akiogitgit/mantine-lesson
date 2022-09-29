@@ -27,31 +27,21 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
+      <Dashboard />
+
       <Center>{session ? <Dashboard /> : <Auth />}</Center>
 
       <Center mt={100}>
         {count}
         <Button onClick={() => setCount(count + 1)}>Add</Button>
       </Center>
+
       <Stack align='center' spacing={2} mt={20}>
-        <Link href='/button' className='text-white'>
-          <a>button</a>
-        </Link>
-        <Link href='/group' className='text-white'>
-          <a>group</a>
-        </Link>
-        <Link href='/grid' className='text-white'>
-          <a>grid</a>
-        </Link>
-        <Link href='/table' className='text-white'>
-          <a>table</a>
-        </Link>
-        <Link href='/form' className='text-white'>
-          <a>form</a>
-        </Link>
-        <Link href='/dashBoard' className='text-white'>
-          <a>dashBoard</a>
-        </Link>
+        {["button", "group", "grid", "form", "dashBoard"].map(path => (
+          <Link key={path} href={`/${path}`} className='text-white'>
+            <a>{path}</a>
+          </Link>
+        ))}
       </Stack>
     </Layout>
   )
