@@ -19,14 +19,16 @@ import { supabase } from "../utils/supabase"
 // ()の中にエラーメッセージ出す
 const schema = Yup.object().shape({
   // emailのフォーマットでないなら、Invalid email
-  email: Yup.string().email("Invalid email").required("No email provided."),
+  email: Yup.string()
+    .email("Emailのフォーマットで入力して下さい")
+    .required("Emailは必須項目です"),
   password: Yup.string()
-    .required("No password provided") // 必須
-    .min(8, "Password should be min 8 chars") // 8文字以上
-    .matches(/[a-z]+/, "One lowercase char missing") // 小文字１つ含む
-    .matches(/[A-Z]+/, "One uppercase char missing")
-    .matches(/[@$!%+#?&]+/, "One special char missing"),
-  age: Yup.number().min(15, "Only over 15 for new account"),
+    .required("パスワードは必須項目です") // 必須
+    .min(8, "パスワードは8文字以上で入力して下さい") // 8文字以上
+    .matches(/[a-z]+/, "小文字のアルファベットを一文字以上必要です") // 小文字１つ含む
+    .matches(/[A-Z]+/, "大文字のアルファベットを一文字以上必要です")
+    .matches(/[@$!%+#?&]+/, "特殊文字が一文字以上必要です"),
+  age: Yup.number().min(15, "15歳未満は登録できません"),
 })
 
 export const Auth: FC = () => {
@@ -38,24 +40,32 @@ export const Auth: FC = () => {
   const form = useForm<Form>({
     schema: yupResolver(schema),
     initialValues: {
-      email: "ee",
-      password: "sdf",
+      email: "",
+      password: "",
       age: 15,
     },
   })
 
   const onSubmit = useCallback(async () => {
+    console.log("submit!")
     // 新規作成
     if (isRegister) {
-      const { error } = await supabase.auth.signUp({
-        email: form.values.email,
-        password: form.values.password,
-      })
-      if (error) {
-        setError(error.message)
+      try {
+        const { error } = await supabase.auth.signUp({
+          email: form.values.email,
+          password: form.values.password,
+        })
+
+        if (error) {
+          setError(error.message)
+        }
+      } catch (e) {
+        console.error(e)
       }
       form.reset() // reset
     } else {
+      // ログイン
+
       const { error } = await supabase.auth.signIn({
         email: form.values.email,
         password: form.values.password,
@@ -118,8 +128,8 @@ export const Auth: FC = () => {
           {isRegister && (
             <NumberInput
               withAsterisk
-              min={15}
-              max={130}
+              // min={15}
+              // max={130}
               label='年齢'
               description='15歳以上で入力して下さい'
               placeholder=''
@@ -131,18 +141,14 @@ export const Auth: FC = () => {
               className='text-sm'
               onClick={() => {
                 setIsRegister(!isRegister)
+                setError("")
                 form.reset()
               }}
             >
               {isRegister ? "ログイン" : "新規登録"}は
               <span className='cursor-pointer text-blue-500'>こちら</span>
             </p>
-            <Button
-              mt='md'
-              variant='outline'
-              className='duration-300 hover:(bg-blue-500 text-white) '
-              type='submit'
-            >
+            <Button mt='md' variant='gradient' type='submit'>
               {isRegister ? "新規登録" : "ログイン"}
             </Button>
           </div>
