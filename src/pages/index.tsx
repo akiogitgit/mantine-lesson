@@ -2,13 +2,13 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { Layout } from "../components/Layout"
-import { Group } from "@mantine/core"
+import { Stack } from "@mantine/core"
 
 const Home: NextPage = () => {
   return (
     <Layout>
       <div>aaa</div>
-      <Group direction='column' spacing={2}>
+      <Stack align='center' spacing={2}>
         <Link href='/button' className='text-white'>
           <a>button</a>
         </Link>
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         <Link href='/form' className='text-white'>
           <a>form</a>
         </Link>
-      </Group>
+      </Stack>
     </Layout>
   )
 }
