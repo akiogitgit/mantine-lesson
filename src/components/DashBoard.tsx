@@ -9,10 +9,11 @@ import {
   Header,
   Menu,
   Navbar,
+  Text,
 } from "@mantine/core"
 import { supabase } from "../utils/supabase"
 import { Layout } from "../components/Layout"
-import { useCallback } from "react"
+import { FC, useCallback } from "react"
 import {
   IconSettings,
   IconMessageCircle,
@@ -40,41 +41,18 @@ export const Dashboard = () => {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>UI Components</Menu.Label>
-              <Menu.Item
-                component={NextLink}
-                href='/button'
-                icon={<Settings size={16} />}
-              >
-                Button
-              </Menu.Item>
-              <Menu.Item
-                component={NextLink}
-                href='/group'
-                icon={<Settings size={16} />}
-              >
-                Group
-              </Menu.Item>
-              <Menu.Item
-                component={NextLink}
-                href='/grid'
-                icon={<Settings size={16} />}
-              >
-                Grid
-              </Menu.Item>
-              <Menu.Item
-                component={NextLink}
-                href='/table'
-                icon={<Settings size={16} />}
-              >
-                Table
-              </Menu.Item>
-              <Menu.Item
-                component={NextLink}
-                href='/form'
-                icon={<Settings size={16} />}
-              >
-                Form
-              </Menu.Item>
+              {["button", "group", "grid", "table", "form", "multi-select"].map(
+                path => (
+                  <Menu.Item
+                    key={path}
+                    component={NextLink}
+                    href={`/${path}`}
+                    icon={<Settings size={16} />}
+                  >
+                    <Text transform='capitalize'>{path}</Text>
+                  </Menu.Item>
+                ),
+              )}
             </Menu.Dropdown>
           </Menu>
         </div>
