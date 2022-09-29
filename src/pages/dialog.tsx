@@ -19,6 +19,35 @@ const DialogDemo: NextPage = () => {
         <Center>
           <Button onClick={() => setOpened(!opened)}>open</Button>
         </Center>
+
+        <Dialog
+          opened={opened}
+          transition='slide-down'
+          transitionDuration={1000}
+          radius='lg'
+          shadow='xl'
+          size='xl'
+          position={{ top: 60, left: 20 }}
+        >
+          <p>top: 60, left: 20</p>
+        </Dialog>
+        <Dialog
+          opened={opened}
+          transition='slide-up'
+          transitionDuration={750}
+          position={{ top: 60, right: 20 }}
+        >
+          <p>top: 60, right: 20</p>
+        </Dialog>
+        <Dialog
+          opened={opened}
+          transition='slide-right'
+          transitionDuration={500}
+          position={{ bottom: 20, left: 20 }}
+        >
+          <p>bottom: 20, left: 50</p>
+        </Dialog>
+
         <Dialog
           opened={opened}
           withCloseButton
@@ -27,30 +56,6 @@ const DialogDemo: NextPage = () => {
           radius='md'
         >
           <p>Dialog default position</p>
-        </Dialog>
-        <Dialog
-          opened={opened}
-          transition='slide-right'
-          position={{ bottom: 20, left: 20 }}
-        >
-          <p>bottom: 20, left: 50</p>
-        </Dialog>
-        <Dialog
-          opened={opened}
-          transition='slide-down'
-          transitionDuration={1000}
-          radius='lg'
-          shadow='xl'
-          position={{ top: 60, left: 20 }}
-        >
-          <p>top: 60, left: 20</p>
-        </Dialog>
-        <Dialog
-          opened={opened}
-          transition='slide-up'
-          position={{ top: 60, right: 20 }}
-        >
-          <p>top: 60, right: 20</p>
         </Dialog>
       </div>
     </Layout>

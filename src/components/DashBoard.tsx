@@ -49,6 +49,7 @@ export const Dashboard = () => {
                 "form",
                 "multi-select",
                 "fetch-data",
+                "dialog",
               ].map(path => (
                 <Menu.Item
                   key={path}
