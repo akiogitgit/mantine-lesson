@@ -15,10 +15,25 @@ import {
   SegmentedControl,
   Slider,
   Switch,
+  TransferList,
+  TransferListData,
 } from "@mantine/core"
 import { IconCheck, IconHeart, IconX } from "@tabler/icons"
 import React, { useState } from "react"
 import { Layout } from "../components/Layout"
+
+const initialValues: TransferListData = [
+  [
+    { value: "react", label: "React" },
+    { value: "next", label: "Next.js" },
+    { value: "gatsby", label: "Gatsby.js" },
+  ],
+  [
+    { value: "sv", label: "Svelte" },
+    { value: "rw", label: "Redwood" },
+    { value: "dj", label: "Django" },
+  ],
+]
 
 const MultiSelectDemo = () => {
   const [inputValue, setInputValue] = useState("")
@@ -29,6 +44,8 @@ const MultiSelectDemo = () => {
   const [numberValue, setNumberValue] = useState(0)
   const [passwordValue, setPasswordValue] = useState("")
   const [rangeValue, setRangeValue] = useState(0)
+  const [transferValues, setTransferValues] =
+    useState<TransferListData>(initialValues)
 
   return (
     <Layout>
@@ -38,18 +55,18 @@ const MultiSelectDemo = () => {
           {/* <Input value={inputValue} onChange={setInputValue} />
           <TextInput value={inputValue} onChange={setInputValue} /> */}
           <Autocomplete
-            value={inputValue}
             label='Autocomplete'
             withAsterisk
             radius={22}
-            onChange={setInputValue}
             data={["React", "Vue", "Angular", "Svelte"]}
+            value={inputValue}
+            onChange={setInputValue}
           />
 
           <Group>
             <Checkbox
               label='label'
-              color='teal'
+              color='green'
               checked={checkValue}
               onChange={e => setCheckValue(e.currentTarget.checked)}
             />
@@ -93,48 +110,47 @@ const MultiSelectDemo = () => {
           <div>
             <MultiSelect
               label='MultiSelect'
+              clearable
               data={[
                 { value: "react", label: "React" },
                 { value: "svelte", label: "Svelte" },
                 { value: "vue", label: "Vue" },
               ]}
+              value={selectValues}
               onChange={setSelectValues}
             />
-            <Switch.Group onChange={setSelectValues}>
+            <Switch.Group value={selectValues} onChange={setSelectValues}>
               <Switch value='react' label='React' />
               <Switch value='svelte' label='Svelte' />
             </Switch.Group>
             {JSON.stringify(selectValues)}
           </div>
 
-          <div>
-            <NumberInput
-              label='NumberInput'
-              withAsterisk
-              value={numberValue}
-              onChange={(e: number) => setNumberValue(e)}
-              max={120}
-              min={-20}
-              step={5}
-            />
-            {numberValue}
-          </div>
+          <NumberInput
+            label='NumberInput'
+            description={numberValue}
+            withAsterisk
+            max={120}
+            min={-20}
+            step={5}
+            value={numberValue}
+            onChange={(e: number) => setNumberValue(e)}
+          />
 
-          <div>
-            <PasswordInput
-              label='PasswordInput'
-              value={passwordValue}
-              onChange={e => setPasswordValue(e.target.value)}
-            />
-          </div>
+          <PasswordInput
+            label='PasswordInput'
+            description={passwordValue}
+            value={passwordValue}
+            onChange={e => setPasswordValue(e.target.value)}
+          />
 
           <Radio.Group
             label='What is your most favorite frontend library ?'
             description={radioValue}
-            value={radioValue}
-            onChange={setRadioValue}
             required
             withAsterisk
+            value={radioValue}
+            onChange={setRadioValue}
           >
             <Radio label='React' value='react' />
             <Radio label='Svelte' value='svelte' />
@@ -149,11 +165,11 @@ const MultiSelectDemo = () => {
               { label: "Angular", value: "ng" },
               { label: "Vue", value: "vue" },
             ]}
-            value={radioValue}
-            onChange={setRadioValue}
             color='blue'
             radius='lg'
             size='md'
+            value={radioValue}
+            onChange={setRadioValue}
           />
 
           <div>
@@ -173,6 +189,16 @@ const MultiSelectDemo = () => {
               onChange={setRangeValue}
             />
             {rangeValue}
+          </div>
+
+          <div>
+            <TransferList
+              titles={["TransferList", "TransferList"]}
+              breakpoint='xs'
+              value={transferValues}
+              onChange={setTransferValues}
+            />
+            {JSON.stringify(transferValues)}
           </div>
         </Center>
       </Container>
