@@ -1,4 +1,4 @@
-import { Button, Stack, Group } from "@mantine/core"
+import { Button, Stack, Group, Dialog } from "@mantine/core"
 import { Layout } from "../components/Layout"
 import { BrandGithub, ThreeDCubeSphere } from "tabler-icons-react"
 import Link from "next/link"
