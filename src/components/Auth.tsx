@@ -44,6 +44,9 @@ export const Auth: FC = () => {
       password: "",
       age: 15,
     },
+    // validate: {
+
+    // }
   })
 
   const onSubmit = useCallback(async () => {

@@ -35,7 +35,7 @@ const GroupDemo: NextPage = () => {
       </Group>
 
       {/* direction */}
-      <Group position='center' direction='column' mt='xl'>
+      <Group position='center' mt='xl'>
         <Button color='indigo'>button1</Button>
         <Button color='teal'>button2</Button>
         <Button color='orange'>button3</Button>
