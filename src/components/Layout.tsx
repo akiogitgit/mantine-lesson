@@ -11,7 +11,7 @@ type Props = {
 
 export const Layout: FC<Props> = ({ title = "Mantine Lesson", children }) => {
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen overflow-hidden'>
       <Head>
         <title>{title}</title>
       </Head>
