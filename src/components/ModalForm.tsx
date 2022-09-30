@@ -7,9 +7,23 @@ import {
   Checkbox,
   Dialog,
 } from "@mantine/core"
-import { useForm } from "@mantine/form"
+import { useForm, yupResolver } from "@mantine/form"
 import React, { FC, useCallback, useState } from "react"
 import { ModalFormParams } from "../types/form"
+import * as Yup from "yup"
+
+const schema = Yup.object().shape({
+  firstName: Yup.string().required("No first name provided"),
+  lastName: Yup.string().required("No first name provided"),
+  email: Yup.string().email("Invalid email").required("No email provided"),
+  password: Yup.string()
+    .min(6, "Password should be min 6 chars")
+    .required("No password provided"),
+  confirmPassword: Yup.string()
+    .required("No confirm password provided")
+    .oneOf([Yup.ref("password")], "Password does not match"),
+  isAgree: Yup.boolean().required(),
+})
 
 export const ModalForm: FC = () => {
   const [isOpenedDialog, setIsOpenedDialog] = useState(false)
@@ -22,17 +36,18 @@ export const ModalForm: FC = () => {
       confirmPassword: "",
       isAgree: true,
     },
-    validate: {
-      firstName: (v: string) => (v === "" ? "invalid firstName" : null),
-      lastName: (v: string) => (v === "" ? "invalid lastName" : null),
-      email: (v: string) => (/^\S+@\S+$/.test(v) ? null : "Invalid email"),
-      password: (v: string) =>
-        v.length < 6 ? "Password must have at least 6 letters" : null,
-      confirmPassword: (v: string) =>
-        v !== form.values.password
-          ? "Password and ConfirmPassword are different"
-          : null,
-    },
+    schema: yupResolver(schema),
+    // validate: {
+    //   firstName: (v: string) => (v === "" ? "invalid firstName" : null),
+    //   lastName: (v: string) => (v === "" ? "invalid lastName" : null),
+    //   email: (v: string) => (/^\S+@\S+$/.test(v) ? null : "Invalid email"),
+    //   password: (v: string) =>
+    //     v.length < 6 ? "Password must have at least 6 letters" : null,
+    //   confirmPassword: (v: string) =>
+    //     v !== form.values.password
+    //       ? "Password and ConfirmPassword are different"
+    //       : null,
+    // },
   })
 
   const onSubmit = useCallback(() => {
