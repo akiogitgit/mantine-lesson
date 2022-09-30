@@ -8,6 +8,7 @@ import {
   Dialog,
   Loader,
   Center,
+  LoadingOverlay,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 // import { MantineTransition } from "@mantine/core/lib/Transition"
@@ -70,6 +71,7 @@ export const ModalForm: FC = () => {
   const onSubmit = useCallback(() => {
     console.log(form.values)
     setIsLoading(true)
+    setIsOpenedDialog(false)
     setTimeout(() => {
       setIsLoading(false)
       setIsOpenedDialog(true)
@@ -79,7 +81,65 @@ export const ModalForm: FC = () => {
   return (
     <>
       <form onSubmit={form.onSubmit(onSubmit)}>
-        {isLoading ? (
+        <LoadingOverlay
+          loaderProps={{ size: "md", color: "blue", variant: "oval" }}
+          overlayOpacity={0.5}
+          overlayColor='#c5c5c5'
+          visible={isLoading}
+        />
+
+        <Stack spacing='md'>
+          <div className='flex gap-3'>
+            <TextInput
+              label='First name'
+              withAsterisk
+              placeholder='Your first name'
+              {...form.getInputProps("firstName")}
+            />
+            <TextInput
+              label='Last name'
+              withAsterisk
+              placeholder='Your Last name'
+              {...form.getInputProps("lastName")}
+            />
+          </div>
+          <TextInput
+            label='Email'
+            withAsterisk
+            placeholder='Your Last name'
+            icon={<AtSymbolIcon className='h-5 w-5' />}
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            label='Password'
+            withAsterisk
+            placeholder='Password'
+            icon={<LockClosedIcon className='h-5 w-5' />}
+            {...form.getInputProps("password")}
+          />
+          <PasswordInput
+            label='Confirm Password'
+            withAsterisk
+            placeholder='Confirm Password'
+            icon={<LockClosedIcon className='h-5 w-5' />}
+            {...form.getInputProps("confirmPassword")}
+          />
+          <Checkbox
+            classNames={{
+              label: "text-gray-500 text-xs",
+            }}
+            label='I agree to sell my soul and privacy to this corporation'
+            checked={form.values.isAgree}
+            {...form.getInputProps("isAgree")}
+          />
+          <div className='flex justify-between items-center'>
+            <p className='cursor-pointer text-sm text-gray-400 hover:underline'>
+              Have an account? Login
+            </p>
+            <Button type='submit'>Register</Button>
+          </div>
+        </Stack>
+        {/* {isLoading ? (
           <Center my={180}>
             <Loader />
           </Center>
@@ -135,7 +195,7 @@ export const ModalForm: FC = () => {
               <Button type='submit'>Register</Button>
             </div>
           </Stack>
-        )}
+        )} */}
       </form>
 
       {dialogs.map((dialog, index) => (
