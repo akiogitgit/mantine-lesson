@@ -6,8 +6,13 @@ import {
   Stack,
   Checkbox,
   Dialog,
+  Loader,
+  Center,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
+// import { MantineTransition } from "@mantine/core/lib/Transition"
+import { MantineTransition } from "../types/mantineTransition"
+
 import React, { FC, useCallback, useState } from "react"
 import { ModalFormParams } from "../types/form"
 import * as Yup from "yup"
@@ -27,6 +32,8 @@ const schema = Yup.object().shape({
 
 export const ModalForm: FC = () => {
   const [isOpenedDialog, setIsOpenedDialog] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
   const form = useForm<ModalFormParams>({
     initialValues: {
       firstName: "",
@@ -50,80 +57,104 @@ export const ModalForm: FC = () => {
     // },
   })
 
+  const dialogs: {
+    transition: MantineTransition
+    position: { top?: number; left?: number; right?: number; bottom?: number }
+  }[] = [
+    { transition: "slide-down", position: { top: 20, left: 20 } },
+    { transition: "slide-left", position: { top: 20, right: 20 } },
+    { transition: "slide-up", position: { bottom: 20, left: 20 } },
+    { transition: "slide-right", position: { bottom: 20, right: 20 } },
+  ]
+
   const onSubmit = useCallback(() => {
     console.log(form.values)
-    setIsOpenedDialog(true)
-  }, [form.values])
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      setIsOpenedDialog(true)
+    }, 1500)
+  }, [form])
 
   return (
     <>
       <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack spacing='md'>
-          <div className='flex gap-3'>
+        {isLoading ? (
+          <Center my={180}>
+            <Loader />
+          </Center>
+        ) : (
+          <Stack spacing='md'>
+            <div className='flex gap-3'>
+              <TextInput
+                label='First name'
+                withAsterisk
+                placeholder='Your first name'
+                {...form.getInputProps("firstName")}
+              />
+              <TextInput
+                label='Last name'
+                withAsterisk
+                placeholder='Your Last name'
+                {...form.getInputProps("lastName")}
+              />
+            </div>
             <TextInput
-              label='First name'
-              withAsterisk
-              placeholder='Your first name'
-              {...form.getInputProps("firstName")}
-            />
-            <TextInput
-              label='Last name'
+              label='Email'
               withAsterisk
               placeholder='Your Last name'
-              {...form.getInputProps("lastName")}
+              icon={<AtSymbolIcon className='h-5 w-5' />}
+              {...form.getInputProps("email")}
             />
-          </div>
-          <TextInput
-            label='Email'
-            withAsterisk
-            placeholder='Your Last name'
-            icon={<AtSymbolIcon className='h-5 w-5' />}
-            {...form.getInputProps("email")}
-          />
-          <PasswordInput
-            label='Password'
-            withAsterisk
-            placeholder='Password'
-            icon={<LockClosedIcon className='h-5 w-5' />}
-            {...form.getInputProps("password")}
-          />
-          <PasswordInput
-            label='Confirm Password'
-            withAsterisk
-            placeholder='Confirm Password'
-            icon={<LockClosedIcon className='h-5 w-5' />}
-            {...form.getInputProps("confirmPassword")}
-          />
-          <Checkbox
-            classNames={{
-              label: "text-gray-500 text-xs",
-            }}
-            label='I agree to sell my soul and privacy to this corporation'
-            checked={form.values.isAgree}
-            {...form.getInputProps("isAgree")}
-          />
-          <div className='flex justify-between items-center'>
-            <p className='cursor-pointer text-sm text-gray-400 hover:underline'>
-              Have an account? Login
-            </p>
-            <Button type='submit'>Register</Button>
-          </div>
-        </Stack>
+            <PasswordInput
+              label='Password'
+              withAsterisk
+              placeholder='Password'
+              icon={<LockClosedIcon className='h-5 w-5' />}
+              {...form.getInputProps("password")}
+            />
+            <PasswordInput
+              label='Confirm Password'
+              withAsterisk
+              placeholder='Confirm Password'
+              icon={<LockClosedIcon className='h-5 w-5' />}
+              {...form.getInputProps("confirmPassword")}
+            />
+            <Checkbox
+              classNames={{
+                label: "text-gray-500 text-xs",
+              }}
+              label='I agree to sell my soul and privacy to this corporation'
+              checked={form.values.isAgree}
+              {...form.getInputProps("isAgree")}
+            />
+            <div className='flex justify-between items-center'>
+              <p className='cursor-pointer text-sm text-gray-400 hover:underline'>
+                Have an account? Login
+              </p>
+              <Button type='submit'>Register</Button>
+            </div>
+          </Stack>
+        )}
       </form>
 
-      <Dialog
-        opened={isOpenedDialog}
-        withCloseButton
-        transition='slide-up'
-        transitionDuration={5000}
-        onClose={() => setIsOpenedDialog(false)}
-      >
-        <p>firstName: {form.values.firstName}</p>
-        <p>lastName: {form.values.lastName}</p>
-        <p>email: {form.values.email}</p>
-        <p>password: {form.values.password}</p>
-        <p>isAgree: {form.values.isAgree ? "true" : "false"}</p>
-      </Dialog>
+      {dialogs.map((dialog, index) => (
+        <Dialog
+          key={dialog.transition}
+          withCloseButton
+          transition={dialog.transition}
+          transitionDuration={1000 * (index + 1)}
+          position={dialog.position}
+          opened={isOpenedDialog}
+          onClose={() => setIsOpenedDialog(false)}
+        >
+          <p>firstName: {form.values.firstName}</p>
+          <p>lastName: {form.values.lastName}</p>
+          <p>email: {form.values.email}</p>
+          <p>password: {form.values.password}</p>
+          <p>isAgree: {form.values.isAgree ? "true" : "false"}</p>
+        </Dialog>
+      ))}
     </>
   )
 }
