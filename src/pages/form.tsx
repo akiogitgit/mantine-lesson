@@ -6,7 +6,6 @@ import { Layout } from "../components/Layout"
 const form: NextPage = () => {
   return (
     <Layout>
-      form
       <div className='mx-auto w-300px'>
         <Auth />
       </div>

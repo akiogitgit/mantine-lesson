@@ -94,6 +94,16 @@ export const Dashboard = () => {
             </Menu.Dropdown>
           </Menu>
         </div>
+
+        <Button
+          color='red'
+          variant='gradient'
+          gradient={{ from: "yellow", to: "red" }}
+          rightIcon={<LogoutIcon className='h-5 w-5' />}
+          onClick={signOut}
+        >
+          Logout
+        </Button>
       </Center>
     </div>
   )

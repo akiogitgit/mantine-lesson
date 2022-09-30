@@ -89,6 +89,7 @@ const MultiSelectDemo = () => {
 
           <div>
             <NativeSelect
+              className='w-230px'
               label='NativeSelect'
               data={["React", "Vue", "Angular", "Svelte"]}
               value={selectValue}
@@ -138,6 +139,7 @@ const MultiSelectDemo = () => {
           />
 
           <PasswordInput
+            className='w-230px'
             label='PasswordInput'
             description={passwordValue}
             value={passwordValue}

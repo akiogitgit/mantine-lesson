@@ -30,22 +30,12 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <Dashboard />
-
       <Center>{session ? <Dashboard /> : <Auth />}</Center>
 
       <Center mt={100}>
         {count}
         <Button onClick={() => setCount(count + 1)}>Add</Button>
       </Center>
-
-      <Stack align='center' spacing={2} mt={20}>
-        {["button", "group", "grid", "form", "dashBoard"].map(path => (
-          <Link key={path} href={`/${path}`} className='text-white'>
-            <a>{path}</a>
-          </Link>
-        ))}
-      </Stack>
     </Layout>
   )
 }
