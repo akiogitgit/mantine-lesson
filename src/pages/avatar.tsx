@@ -3,6 +3,7 @@ import Link from "next/link"
 import {
   Avatar,
   Button,
+  Center,
   FileInput,
   Group,
   Indicator,
@@ -89,61 +90,48 @@ const AvatarDemo = () => {
 
   return (
     <Layout>
-      <div>Avatar</div>
-      {isLoading && <Loader />}
-      <label htmlFor='avatar'>avatar</label>
-      <input
-        type='file'
-        id='avatar'
-        accept='image/*'
-        className='cursor-pointer file:text-white file:rounded-full file:bg-purple-400 file:border-0 file:py-2 file:px-4'
-        onChange={uploadAvatarImg}
-      />
-      <Button onClick={upsertProfile}>Upsert</Button>
-      <Button color='cyan' onClick={getProfile}>
-        getAvatar
-      </Button>
+      <Center className='flex-col gap-3'>
+        {isLoading && <Loader />}
 
-      <Indicator
-        inline
-        label=''
-        size={16}
-        offset={7}
-        position='bottom-end'
-        withBorder
-      >
-        <Avatar
-          size='lg'
-          src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80'
-        />
-      </Indicator>
-      {avatarUrl && (
-        <>
-          <div>{avatarUrl}</div>
-
-          <Indicator
-            inline
-            label=''
-            size={16}
-            offset={7}
-            position='bottom-end'
-            withBorder
-          >
-            <Avatar
-              size='lg'
+        {avatarUrl && (
+          <>
+            <Indicator
+              inline
+              label=''
+              size={16}
+              offset={7} // 内側に7
+              position='bottom-end'
+              withBorder // 外側の白
+              processing // 主張激しくなる
+            >
+              <Avatar
+                size='lg'
+                radius='xl'
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
+              />
+            </Indicator>
+            {/* <Image
               src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
-            />
-          </Indicator>
-          <Image
-            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
-            width={50}
-            height={50}
-            alt=''
-          />
-        </>
-      )}
-      {/* <FileInput multiple onChange={e => uploadAvatarImg(e)} /> */}
-      {/* <FileInput multiple onChange={e => console.log(e)} /> */}
+              width={50}
+              height={50}
+              alt=''
+            /> */}
+          </>
+        )}
+        <label htmlFor='avatar'>
+          <CameraIcon className='h-10 w-10' />
+        </label>
+        <input
+          type='file'
+          id='avatar'
+          accept='image/*'
+          className='cursor-pointer file:text-white file:rounded-full hidden file:bg-purple-400 file:border-0 file:py-2 file:px-4'
+          onChange={uploadAvatarImg}
+        />
+        <Button onClick={upsertProfile}>Upsert</Button>
+        {/* <FileInput multiple onChange={e => uploadAvatarImg(e)} /> */}
+        {/* <FileInput multiple onChange={e => console.log(e)} /> */}
+      </Center>
     </Layout>
   )
 }
