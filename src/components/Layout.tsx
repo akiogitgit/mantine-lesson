@@ -11,14 +11,16 @@ type Props = {
 
 export const Layout: FC<Props> = ({ title = "Mantine Lesson", children }) => {
   return (
-    <div className='min-h-screen overflow-hidden'>
+    <div className='flex flex-col min-h-screen'>
       <Head>
         <title>{title}</title>
       </Head>
 
       <header></header>
 
-      <main className='p-4'>{children}</main>
+      <main className='flex flex-col flex-1 p-4 justify-center'>
+        {children}
+      </main>
 
       <footer>
         {/* 中央寄せ */}

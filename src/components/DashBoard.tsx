@@ -51,6 +51,7 @@ export const Dashboard = () => {
                 "fetch-data",
                 "dialog",
                 "modal",
+                "avatar",
               ].map(path => (
                 <Menu.Item
                   key={path}
