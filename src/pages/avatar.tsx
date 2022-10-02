@@ -18,15 +18,17 @@ const AvatarDemo = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState("")
 
+  // FileInputからは取得できない
   const uploadAvatarImg = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       console.log("file: ", e, e.target.files)
       if (!e.target.files || !e.target.files.length) {
         throw new Error("Please select the image file")
       }
-      const file = e.target.files[0]
+
+      const file = e.target.files[0] // 内容
       const fileExt = file.name.split(".").pop()
-      const fileName = `${Math.random()}.${fileExt}`
+      const fileName = `${Math.random()}.${fileExt}` // storageに保存する名前
       setIsLoading(true)
 
       const { error } = await supabase.storage
@@ -94,32 +96,27 @@ const AvatarDemo = () => {
         {isLoading && <Loader />}
 
         {avatarUrl && (
-          <>
-            <Indicator
-              inline
-              label=''
-              size={16}
-              offset={7} // 内側に7
-              position='bottom-end'
-              withBorder // 外側の白
-              processing // 主張激しくなる
-            >
-              <Avatar
-                size='lg'
-                radius='xl'
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
-              />
-            </Indicator>
-            {/* <Image
+          <Indicator
+            // inline
+            label=''
+            size={16}
+            offset={7} // 内側に7
+            color='green'
+            position='bottom-end'
+            withBorder // 外側の白
+            processing // 主張激しくなる
+          >
+            <Avatar
+              size='lg'
+              radius='xl'
+              className='transform duration-300 hover:scale-105'
               src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
-              width={50}
-              height={50}
-              alt=''
-            /> */}
-          </>
+            />
+          </Indicator>
         )}
+
         <label htmlFor='avatar'>
-          <CameraIcon className='h-10 w-10' />
+          <CameraIcon className='cursor-pointer h-10 w-10' />
         </label>
         <input
           type='file'
@@ -129,7 +126,6 @@ const AvatarDemo = () => {
           onChange={uploadAvatarImg}
         />
         <Button onClick={upsertProfile}>Upsert</Button>
-        {/* <FileInput multiple onChange={e => uploadAvatarImg(e)} /> */}
         {/* <FileInput multiple onChange={e => console.log(e)} /> */}
       </Center>
     </Layout>
