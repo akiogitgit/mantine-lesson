@@ -40,6 +40,7 @@ const AvatarDemo = () => {
     [],
   )
 
+  // upsert は、存在しなければInsert, 存在すればUpdate する優れもの
   const upsertProfile = useCallback(async () => {
     setIsLoading(true)
 
@@ -58,6 +59,10 @@ const AvatarDemo = () => {
       throw new Error(error.message)
     }
     setIsLoading(false)
+    console.log("upsert", {
+      id: supabase.auth.user()?.id,
+      avatar_url: avatarUrl,
+    })
   }, [avatarUrl])
 
   const getProfile = useCallback(async () => {
@@ -67,8 +72,8 @@ const AvatarDemo = () => {
       .eq("id", supabase.auth.user()?.id) // ログインしているuser.idと同じ
       .single() // １つ
 
-    // profile無いなら、406でエラーを投げない
-    if (error && status !== 400) {
+    // profile無い時は406になるから、エラーは投げない
+    if (error && status !== 406) {
       throw new Error(error.message)
     }
     if (data) {
@@ -77,9 +82,10 @@ const AvatarDemo = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  getProfile()
-  // }, [])
+  // uploadAvatarの後に、avatarUrlを変更させない
+  useEffect(() => {
+    getProfile()
+  }, [getProfile])
 
   return (
     <Layout>
@@ -97,10 +103,43 @@ const AvatarDemo = () => {
       <Button color='cyan' onClick={getProfile}>
         getAvatar
       </Button>
+
+      <Indicator
+        inline
+        label=''
+        size={16}
+        offset={7}
+        position='bottom-end'
+        withBorder
+      >
+        <Avatar
+          size='lg'
+          src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80'
+        />
+      </Indicator>
       {avatarUrl && (
         <>
           <div>{avatarUrl}</div>
-          <Image src={avatarUrl} width={50} height={50} alt='' />
+
+          <Indicator
+            inline
+            label=''
+            size={16}
+            offset={7}
+            position='bottom-end'
+            withBorder
+          >
+            <Avatar
+              size='lg'
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
+            />
+          </Indicator>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/${avatarUrl}`}
+            width={50}
+            height={50}
+            alt=''
+          />
         </>
       )}
       {/* <FileInput multiple onChange={e => uploadAvatarImg(e)} /> */}

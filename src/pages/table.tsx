@@ -26,6 +26,7 @@ const TableDemo: NextPage = () => {
         id='player'
         width='300'
         height='200'
+        title='title'
         src={"https://www.youtube.com/embed/" + "auLih2TFwio"}
         frameBorder='0'
         allowFullScreen
