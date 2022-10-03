@@ -22,7 +22,7 @@ const AvatarDemo = () => {
   const uploadAvatarImg = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       console.log("file: ", e, e.target.files)
-      if (!e.target.files || !e.target.files.length) {
+      if (!e.target.files || e.target.files.length === 0) {
         throw new Error("Please select the image file")
       }
 
@@ -69,6 +69,9 @@ const AvatarDemo = () => {
   }, [avatarUrl])
 
   const getProfile = useCallback(async () => {
+    if (!supabase.auth.user()) {
+      return
+    }
     const { data, error, status } = await supabase
       .from("profiles")
       .select("avatar_url") // profilesテーブルのavatar_urlカラム
@@ -125,7 +128,9 @@ const AvatarDemo = () => {
           className='cursor-pointer file:text-white file:rounded-full hidden file:bg-purple-400 file:border-0 file:py-2 file:px-4'
           onChange={uploadAvatarImg}
         />
-        <Button onClick={upsertProfile}>Upsert</Button>
+        <Button onClick={upsertProfile} disabled={!avatarUrl}>
+          Upsert
+        </Button>
         {/* <FileInput multiple onChange={e => console.log(e)} /> */}
       </Center>
     </Layout>
