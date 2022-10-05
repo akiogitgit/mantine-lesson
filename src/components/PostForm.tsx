@@ -1,28 +1,81 @@
 import { Button, Textarea, TextInput } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
-import { useCallback } from "react"
+import { ChangeEvent, useCallback, useState } from "react"
+import { useQueryClient } from "react-query"
 import * as Yup from "yup"
+import { useQueryPosts } from "../hooks/useQueryPosts"
 import { Post } from "../types/post"
-export const PostForm = () => {
-  const schema = Yup.object().shape({
-    title: Yup.string().required("タイトルは必須項目です。"),
-    content: Yup.string().required("内容は必須項目です。"),
-    status: Yup.string().required("ステータスは必須項目です。"),
-  })
+import { supabase } from "../utils/supabase"
 
-  const form = useForm<Post>({
+const schema = Yup.object().shape({
+  title: Yup.string().required("タイトルは必須項目です。"),
+  content: Yup.string().required("内容は必須項目です。"),
+  status: Yup.string().required("ステータスは必須項目です。"),
+})
+
+type PostFormParams = Pick<Post, "title" | "content" | "status">
+
+export const PostForm = () => {
+  const queryClient = useQueryClient()
+  const { data: posts } = useQueryPosts()
+  const [isLoading, setIsLoading] = useState(false)
+  const [postUrl, setPostUrl] = useState("")
+  console.log(posts)
+
+  const form = useForm<PostFormParams>({
     schema: yupResolver(schema),
     initialValues: {
       title: "adsf",
       content: "",
-      status: "",
-      post_url: "",
+      status: "new",
     },
   })
 
-  const onSubmit = useCallback(() => {
+  const uploadPostImg = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files || e.target.files.length === 0) {
+        throw new Error("Plese select the image file.")
+      }
+
+      const file = e.target.files[0]
+      const fileExt = file.name.split(".").pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      setIsLoading(true)
+      const { error } = await supabase.storage
+        .from("posts")
+        .upload(fileName, file)
+
+      if (error) {
+        throw new Error(error.message)
+      }
+      setPostUrl(fileName)
+      setIsLoading(false)
+    },
+    [],
+  )
+
+  const onSubmit = useCallback(async () => {
     console.log("submit!", form.values)
-  }, [form.values])
+    setIsLoading(true)
+    const { data, error } = await supabase.from("articles").insert({
+      title: form.values.title,
+      content: form.values.content,
+      status: form.values.status,
+      post_url: postUrl,
+    })
+
+    if (error) {
+      throw new Error(error.message)
+    }
+    const cachePosts = queryClient.getQueryData<Post[]>(["posts"])
+    if (cachePosts) {
+      queryClient.setQueriesData(["posts"], [...cachePosts, data[0]])
+    }
+
+    setIsLoading(false)
+    setPostUrl("")
+    form.reset()
+  }, [form, postUrl, queryClient])
 
   return (
     <div className='min-w-200px max-w-500px'>
@@ -44,11 +97,11 @@ export const PostForm = () => {
           withAsterisk
           {...form.getInputProps("status")}
         />{" "}
-        <TextInput
+        {/* <TextInput
           label='url'
           withAsterisk
           {...form.getInputProps("post_url")}
-        />
+        /> */}
         <div className='flex justify-end'>
           <Button type='submit'>作成</Button>
         </div>

@@ -3,6 +3,7 @@ import React, { FC } from "react"
 import { Post } from "../types/post"
 // import Image from "next/image"
 import { Image } from "@mantine/core"
+import { useQueryPosts } from "../hooks/useQueryPosts"
 
 type Props = Pick<Post, "title" | "content" | "status" | "post_url">
 

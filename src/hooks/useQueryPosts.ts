@@ -3,7 +3,7 @@ import { supabase } from "../utils/supabase"
 import { Post } from "../types/post"
 import { useCallback } from "react"
 
-export const UseQueryPosts = () => {
+export const useQueryPosts = () => {
   const getPosts = useCallback(async () => {
     const { data, error } = await supabase
       .from("posts")
@@ -15,12 +15,13 @@ export const UseQueryPosts = () => {
     }
     return data
   }, [])
+
   return useQuery<Post[]>({
     queryKey: ["posts"],
     queryFn: getPosts,
   })
 
-  const insertPost = useCallback(async () => {}, [])
+  // const insertPost = useCallback(async () => {}, [])
 
-  return { getPosts }
+  // return { getPosts }
 }
