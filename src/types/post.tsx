@@ -3,6 +3,6 @@ export type Post = {
   created_at: string
   title: string
   content: string
-  status: "new" | "pickup" | "hot"
+  status: string //"new" | "pickup" | "hot"
   post_url: string
 }

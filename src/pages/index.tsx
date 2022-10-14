@@ -16,8 +16,6 @@ const Home: NextPage = () => {
   const setSession = useStore(state => state.setSession)
   const count = useStore(state => state.count)
   const setCount = useStore(state => state.setCount)
-  // const { getTodos } = useQueryTodos()
-  // console.log(getTodos)
 
   useEffect(() => {
     setSession(supabase.auth.session())
@@ -28,10 +26,25 @@ const Home: NextPage = () => {
     console.log(session)
   }, [setSession, count, session])
 
+  const submit = (string: string) => {
+    alert(`submit${string}`)
+  }
+
+  const onSubmit = () => {}
+
   return (
     <Layout>
+      <div className=''></div>
+      <form action='' onSubmit={() => submit("aaaaa")}>
+        <input type='text' />
+        <Button type='submit' color='indigo' size='xl' radius='xl'>
+          Button
+        </Button>
+        <button className='bg-black font-bold text-white py-3 px-6'>
+          Button
+        </button>
+      </form>
       <Center>{session ? <Dashboard /> : <Auth />}</Center>
-
       <Center mt={100}>
         {count}
         <Button onClick={() => setCount(count + 1)}>Add</Button>

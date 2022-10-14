@@ -1,4 +1,13 @@
-import { Button, Textarea, TextInput } from "@mantine/core"
+import { CameraIcon } from "@heroicons/react/solid"
+import {
+  Avatar,
+  Button,
+  Center,
+  Indicator,
+  Loader,
+  Textarea,
+  TextInput,
+} from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { ChangeEvent, useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
@@ -40,6 +49,9 @@ export const PostForm = () => {
       const file = e.target.files[0]
       const fileExt = file.name.split(".").pop()
       const fileName = `${Math.random()}.${fileExt}`
+      console.log({ file })
+      console.log({ fileExt })
+      console.log({ fileName })
       setIsLoading(true)
       const { error } = await supabase.storage
         .from("posts")
@@ -55,9 +67,15 @@ export const PostForm = () => {
   )
 
   const onSubmit = useCallback(async () => {
-    console.log("submit!", form.values)
+    console.log("submit!", {
+      title: form.values.title,
+      content: form.values.content,
+      status: form.values.status,
+      post_url: postUrl,
+    })
     setIsLoading(true)
-    const { data, error } = await supabase.from("articles").insert({
+
+    const { data, error } = await supabase.from("posts").insert({
       title: form.values.title,
       content: form.values.content,
       status: form.values.status,
@@ -72,6 +90,7 @@ export const PostForm = () => {
       queryClient.setQueriesData(["posts"], [...cachePosts, data[0]])
     }
 
+    console.log("投稿に成功しました")
     setIsLoading(false)
     setPostUrl("")
     form.reset()
@@ -102,9 +121,28 @@ export const PostForm = () => {
           withAsterisk
           {...form.getInputProps("post_url")}
         /> */}
-        <div className='flex justify-end'>
+        <Center className='flex-col'>
+          {isLoading && <Loader />}
+          {postUrl && (
+            <Avatar
+              size='lg'
+              radius='sm'
+              className='transform duration-300 hover:scale-105'
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/posts/${postUrl}`}
+            />
+          )}
+          <label htmlFor='post'>
+            <CameraIcon className='cursor-pointer h-10 w-10' />
+          </label>
+          <input
+            type='file'
+            id='post'
+            accept='image/*'
+            className='hidden'
+            onChange={uploadPostImg}
+          />
           <Button type='submit'>作成</Button>
-        </div>
+        </Center>
       </form>
     </div>
   )

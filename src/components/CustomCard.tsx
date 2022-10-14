@@ -22,7 +22,7 @@ export const CustomCard: FC<Props> = ({
         <Image
           width={200}
           height={120}
-          src={undefined}
+          src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/posts/${post_url}`}
           alt='Without placeholder'
           withPlaceholder
         />
