@@ -12,7 +12,7 @@ import { useForm, yupResolver } from "@mantine/form"
 import { ChangeEvent, useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
 import * as Yup from "yup"
-import { useApiSupabase } from "../hooks/useApi"
+import { useDB } from "../hooks/useDB"
 import { useQueryPosts } from "../hooks/useQueryPosts"
 import { Post } from "../types/post"
 import { supabase } from "../utils/supabase"
@@ -30,7 +30,7 @@ export const PostForm = () => {
   const { data: posts } = useQueryPosts()
   const [isLoading, setIsLoading] = useState(false)
   const [postUrl, setPostUrl] = useState("")
-  const { insertDB } = useApiSupabase()
+  const { insertDB } = useDB()
 
   console.log(posts)
 

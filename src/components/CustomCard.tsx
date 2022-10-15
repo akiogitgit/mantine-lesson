@@ -4,15 +4,13 @@ import { Post } from "../types/post"
 // import Image from "next/image"
 import { Image } from "@mantine/core"
 import { useQueryPosts } from "../hooks/useQueryPosts"
+import { useDB } from "../hooks/useDB"
 
-type Props = Pick<Post, "title" | "content" | "status" | "post_url">
+type Props = { post: Post }
 
-export const CustomCard: FC<Props> = ({
-  title,
-  content,
-  status,
-  post_url = null,
-}) => {
+export const CustomCard: FC<Props> = ({ post }) => {
+  const { deleteDB } = useDB()
+
   return (
     <Card shadow='md' className='min-w-300px max-w-400px'>
       <Card.Section>
@@ -22,18 +20,24 @@ export const CustomCard: FC<Props> = ({
         <Image
           width={200}
           height={120}
-          src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/posts/${post_url}`}
+          src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/posts/${post.post_url}`}
           alt='Without placeholder'
           withPlaceholder
         />
       </Card.Section>
       <Group position='apart'>
-        <p className='text-xl'>{title}</p>
-        <Badge variant='filled' radius='lg' color='pink'>
-          {status}
+        <p className='text-xl'>{post.title}</p>
+        <Badge
+          variant='filled'
+          radius='lg'
+          color='pink'
+          className='hover:bg-blue-400'
+          onClick={() => deleteDB("posts", { value: post.id })}
+        >
+          {post.status}
         </Badge>
       </Group>
-      <p className='mt-5'>{content}</p>
+      <p className='mt-5'>{post.content}</p>
 
       <Button mt='md' className='w-full' color='gray'>
         Subscribe

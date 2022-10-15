@@ -66,12 +66,7 @@ const CardDemo: NextPage = () => {
       <ul className='flex gap-3 items-center overflow-x-scroll'>
         {posts?.map((post, index) => (
           <li key={index} className='w-400px'>
-            <CustomCard
-              post_url={post.post_url}
-              title={post.title}
-              content={post.content}
-              status={post.status}
-            />
+            <CustomCard post={post} />
           </li>
         ))}
       </ul>
