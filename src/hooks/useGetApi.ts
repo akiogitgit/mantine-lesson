@@ -13,7 +13,7 @@ type Props = {
 // これだと引数がオブジェクトになってしまう
 export const useGetApi = <Data = any>(
   tableName: string,
-  { order = "*", ascending = true }: Props,
+  { order = "created_at", ascending = true }: Props,
 ) => {
   // export const useGetApi = <Data = any>({
   //   tableName,
@@ -30,6 +30,7 @@ export const useGetApi = <Data = any>(
       .from(tableName)
       .select("*")
       .order(order, { ascending })
+    // .order("created_at", { ascending: true })
 
     if (error) {
       throw new Error(error.message)

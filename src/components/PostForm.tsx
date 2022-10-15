@@ -12,6 +12,7 @@ import { useForm, yupResolver } from "@mantine/form"
 import { ChangeEvent, useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
 import * as Yup from "yup"
+import { useApiSupabase } from "../hooks/useApi"
 import { useQueryPosts } from "../hooks/useQueryPosts"
 import { Post } from "../types/post"
 import { supabase } from "../utils/supabase"
@@ -29,6 +30,8 @@ export const PostForm = () => {
   const { data: posts } = useQueryPosts()
   const [isLoading, setIsLoading] = useState(false)
   const [postUrl, setPostUrl] = useState("")
+  const { insertDB } = useApiSupabase()
+
   console.log(posts)
 
   const form = useForm<PostFormParams>({
@@ -75,26 +78,18 @@ export const PostForm = () => {
     })
     setIsLoading(true)
 
-    const { data, error } = await supabase.from("posts").insert({
+    await insertDB<Post>("posts", {
       title: form.values.title,
       content: form.values.content,
       status: form.values.status,
       post_url: postUrl,
     })
 
-    if (error) {
-      throw new Error(error.message)
-    }
-    const cachePosts = queryClient.getQueryData<Post[]>(["posts"])
-    if (cachePosts) {
-      queryClient.setQueriesData(["posts"], [...cachePosts, data[0]])
-    }
-
     console.log("投稿に成功しました")
     setIsLoading(false)
     setPostUrl("")
     form.reset()
-  }, [form, postUrl, queryClient])
+  }, [form, insertDB, postUrl])
 
   return (
     <div className='min-w-200px max-w-500px'>

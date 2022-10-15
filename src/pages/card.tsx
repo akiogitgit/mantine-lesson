@@ -7,17 +7,13 @@ import { Post } from "../types/post"
 import { useQueryPosts } from "../hooks/useQueryPosts"
 import { useGetApi } from "../hooks/useGetApi"
 
-// id: number;
-// created_at: string;
-// title: string;
-// content: string;
-// status: "new" | "pickup" | "hot";
-// post_url: string;
 const CardDemo: NextPage = () => {
-  // const { data: posts } = useQueryPosts()
   // const { data: posts } = useGetApi<Post>({ tableName: "posts" })
-  // const { data: posts } = useGetApi<Post>("posts", { ascending: true })
-  const { data: posts } = useGetApi<Post>("posts", {})
+  // const { data: posts } = useGetApi<Post>("posts", {
+  //   order: "created_at",
+  //   ascending: true,
+  // })
+  const { data: posts } = useGetApi<Post>("posts", { ascending: false })
   console.log(posts)
   // const posts: Post[] = [
   //   {
