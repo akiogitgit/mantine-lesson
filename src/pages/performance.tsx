@@ -8,12 +8,21 @@ import {
 } from "tabler-icons-react"
 import { useQueryPerformance } from "../hooks/useQueryPerformance"
 import { supabase } from "../utils/supabase"
-import { Timeline, Text, Grid, Center, RingProgress } from "@mantine/core"
+import {
+  Timeline,
+  Text,
+  Grid,
+  Center,
+  RingProgress,
+  Space,
+  Slider,
+} from "@mantine/core"
+import { Performance } from "../types/performance"
 
 const Performance = () => {
   const { data } = useQueryPerformance()
-  const [efficiency, setEfficiency] = useState<number | undefined>(0)
   const [level, setLevel] = useState<number | undefined>(0)
+  const [efficiency, setEfficiency] = useState<number | undefined>(0)
   const [durability, setDurability] = useState<number | undefined>(0)
   const [comfort, setComfort] = useState<number | undefined>(0)
   const [luck, setLuck] = useState<number | undefined>(0)
@@ -26,18 +35,30 @@ const Performance = () => {
     setLuck(data?.luck)
   }, [data])
 
-  const updateHandler = useCallback(async (value: number, key: string) => {
-    await supabase
-      .from("performances")
-      .update({ [key]: value })
-      .eq("user_id", supabase.auth.user()?.id)
-  }, [])
+  const updateHandler = useCallback(
+    async (
+      value: number,
+      key: keyof Omit<Performance, "id" | "user_id" | "created_at">,
+    ) => {
+      await supabase
+        .from("performances")
+        .update({ [key]: value })
+        .eq("user_id", supabase.auth.user()?.id)
+      console.log(value)
+    },
+    [],
+  )
+
+  // const a = [...Array(10)].map((v, i) => {
+  //   return { value: i * 10, label: i * 10 }
+  // })
+  // console.log(a)
 
   return (
     <Layout>
       <p>{level}</p>
       {data && (
-        <>
+        <Center className='flex-col'>
           <Timeline active={data.level - 1} bulletSize={24} lineWidth={2}>
             <Timeline.Item bullet={<GitBranch size={12} />} title='Level 1'>
               <Text color='dimmed' size='sm'>
@@ -97,6 +118,8 @@ const Performance = () => {
               </Text>
             </Timeline.Item>
           </Timeline>
+
+          <Space h={50} />
 
           <Grid justify='center'>
             <Grid.Col md={6} lg={3}>
@@ -170,7 +193,88 @@ const Performance = () => {
               </Center>
             </Grid.Col>
           </Grid>
-        </>
+
+          <Space h={50} />
+
+          <Slider
+            className='my-10 w-96'
+            value={level}
+            onChange={setLevel}
+            // 動きが止まった後で発火
+            onChangeEnd={value => {
+              updateHandler(value, "level")
+            }}
+            color='blue'
+            min={1}
+            max={4}
+            marks={[
+              { value: 1, label: 1 },
+              { value: 2, label: 2 },
+              { value: 3, label: 3 },
+              { value: 4, label: 4 },
+            ]}
+          />
+          <Slider
+            className='my-10 w-96'
+            value={efficiency}
+            onChange={setEfficiency}
+            onChangeEnd={value => {
+              updateHandler(value, "efficiency")
+            }}
+            color='indigo'
+            min={0}
+            max={100}
+            step={10}
+            marks={[...Array(11)].map((v, i) => {
+              return { value: i * 10, label: i * 10 }
+            })}
+          />
+          <Slider
+            className='my-10 w-96'
+            value={comfort}
+            onChange={setComfort}
+            onChangeEnd={value => {
+              updateHandler(value, "comfort")
+            }}
+            color='pink'
+            min={0}
+            max={100}
+            step={10}
+            marks={[...Array(11)].map((v, i) => {
+              return { value: i * 10, label: i * 10 }
+            })}
+          />
+          <Slider
+            className='my-10 w-96'
+            value={durability}
+            onChange={setDurability}
+            onChangeEnd={value => {
+              updateHandler(value, "durability")
+            }}
+            color='sky'
+            min={0}
+            max={100}
+            step={10}
+            marks={[...Array(11)].map((v, i) => {
+              return { value: i * 10, label: i * 10 }
+            })}
+          />
+          <Slider
+            className='my-10 w-96'
+            value={luck}
+            onChange={setLuck}
+            onChangeEnd={value => {
+              updateHandler(value, "luck")
+            }}
+            color='orange'
+            min={0}
+            max={100}
+            step={10}
+            marks={[...Array(11)].map((v, i) => {
+              return { value: i * 10, label: i * 10 }
+            })}
+          />
+        </Center>
       )}
     </Layout>
   )
