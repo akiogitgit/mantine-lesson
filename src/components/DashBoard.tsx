@@ -53,6 +53,7 @@ export const Dashboard = () => {
                 "modal",
                 "avatar",
                 "card",
+                "performance",
               ].map(path => (
                 <Menu.Item
                   key={path}
