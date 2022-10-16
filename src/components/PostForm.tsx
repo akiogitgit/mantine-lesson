@@ -5,6 +5,7 @@ import {
   Center,
   Indicator,
   Loader,
+  Select,
   Textarea,
   TextInput,
 } from "@mantine/core"
@@ -32,14 +33,12 @@ export const PostForm = () => {
   const [postUrl, setPostUrl] = useState("")
   const { insertDB } = useDB()
 
-  console.log(posts)
-
   const form = useForm<PostFormParams>({
     schema: yupResolver(schema),
     initialValues: {
-      title: "adsf",
+      title: "",
       content: "",
-      status: "new",
+      status: "",
     },
   })
 
@@ -52,9 +51,6 @@ export const PostForm = () => {
       const file = e.target.files[0]
       const fileExt = file.name.split(".").pop()
       const fileName = `${Math.random()}.${fileExt}`
-      console.log({ file })
-      console.log({ fileExt })
-      console.log({ fileName })
       setIsLoading(true)
       const { error } = await supabase.storage
         .from("posts")
@@ -93,7 +89,6 @@ export const PostForm = () => {
 
   return (
     <div className='min-w-200px max-w-500px'>
-      {JSON.stringify(form.values)}
       <form onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-3'>
         <TextInput
           label='Title'
@@ -106,16 +101,12 @@ export const PostForm = () => {
           autosize
           {...form.getInputProps("content")}
         />
-        <TextInput
-          label='Status'
+        <Select
+          label='status'
           withAsterisk
+          data={["new", "hot", "sale"]}
           {...form.getInputProps("status")}
-        />{" "}
-        {/* <TextInput
-          label='url'
-          withAsterisk
-          {...form.getInputProps("post_url")}
-        /> */}
+        />
         <Center className='flex-col'>
           {isLoading && <Loader />}
           {postUrl && (

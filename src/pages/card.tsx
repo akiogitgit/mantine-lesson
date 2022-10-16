@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { CustomCard } from "../components/CustomCard"
 import { PostForm } from "../components/PostForm"
-import { Center, ScrollArea } from "@mantine/core"
+import { Center, ScrollArea, Space } from "@mantine/core"
 import { Post } from "../types/post"
 import { useGetApi } from "../hooks/useGetApi"
 import { Carousel } from "@mantine/carousel"
@@ -62,6 +62,9 @@ const CardDemo: NextPage = () => {
       <Center>
         <PostForm />
       </Center>
+
+      <Space h={100} />
+
       <ScrollArea scrollHideDelay={500}>
         <ul className='flex gap-10 items-start '>
           {posts?.map((post, index) => (
@@ -71,6 +74,9 @@ const CardDemo: NextPage = () => {
           ))}
         </ul>
       </ScrollArea>
+
+      <Space h={50} />
+
       {posts && (
         <>
           <Carousel
@@ -88,9 +94,11 @@ const CardDemo: NextPage = () => {
             ))}
           </Carousel>
 
+          <Space h={50} />
+
           <Carousel
             withIndicators
-            height={200}
+            controlSize={40}
             slideSize='50%'
             slideGap='md'
             loop
