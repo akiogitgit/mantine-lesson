@@ -56,7 +56,6 @@ const Performance = () => {
 
   return (
     <Layout>
-      <p>{level}</p>
       {data && (
         <Center className='flex-col'>
           <Timeline active={data.level - 1} bulletSize={24} lineWidth={2}>
