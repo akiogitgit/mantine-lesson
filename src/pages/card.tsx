@@ -2,10 +2,10 @@ import { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { CustomCard } from "../components/CustomCard"
 import { PostForm } from "../components/PostForm"
-import { Center, Grid } from "@mantine/core"
+import { Center, ScrollArea } from "@mantine/core"
 import { Post } from "../types/post"
-import { useQueryPosts } from "../hooks/useQueryPosts"
 import { useGetApi } from "../hooks/useGetApi"
+import { Carousel } from "@mantine/carousel"
 
 const CardDemo: NextPage = () => {
   // const { data: posts } = useGetApi<Post>({ tableName: "posts" })
@@ -62,21 +62,49 @@ const CardDemo: NextPage = () => {
       <Center>
         <PostForm />
       </Center>
-      {/* <Grid>
-        {posts?.map(post => (
-          <Grid.Col key={post.id} span={3}>
-            <CustomCard post={post} />
-          </Grid.Col>
-        ))}
-      </Grid> */}
+      <ScrollArea scrollHideDelay={500}>
+        <ul className='flex gap-10 items-start '>
+          {posts?.map((post, index) => (
+            <li key={index}>
+              <CustomCard post={post} />
+            </li>
+          ))}
+        </ul>
+      </ScrollArea>
+      {posts && (
+        <>
+          <Carousel
+            slideSize='350px'
+            slideGap='lg'
+            controlSize={40}
+            slidesToScroll={1}
+            loop
+            withIndicators
+          >
+            {posts?.map((post, index) => (
+              <Carousel.Slide key={index}>
+                <CustomCard post={post} />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
 
-      <ul className='flex gap-3 items-start overflow-x-scroll'>
-        {posts?.map((post, index) => (
-          <li key={index}>
-            <CustomCard post={post} />
-          </li>
-        ))}
-      </ul>
+          <Carousel
+            withIndicators
+            height={200}
+            slideSize='50%'
+            slideGap='md'
+            loop
+            align='start'
+            slidesToScroll={2}
+          >
+            {posts.map((post, index) => (
+              <Carousel.Slide key={index}>
+                <CustomCard post={post} />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        </>
+      )}
     </Layout>
   )
 }
