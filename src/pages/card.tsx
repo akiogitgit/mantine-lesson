@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { CustomCard } from "../components/CustomCard"
 import { PostForm } from "../components/PostForm"
-import { Center } from "@mantine/core"
+import { Center, Grid } from "@mantine/core"
 import { Post } from "../types/post"
 import { useQueryPosts } from "../hooks/useQueryPosts"
 import { useGetApi } from "../hooks/useGetApi"
@@ -62,10 +62,17 @@ const CardDemo: NextPage = () => {
       <Center>
         <PostForm />
       </Center>
+      {/* <Grid>
+        {posts?.map(post => (
+          <Grid.Col key={post.id} span={3}>
+            <CustomCard post={post} />
+          </Grid.Col>
+        ))}
+      </Grid> */}
 
-      <ul className='flex gap-3 items-center overflow-x-scroll'>
+      <ul className='flex gap-3 items-start overflow-x-scroll'>
         {posts?.map((post, index) => (
-          <li key={index} className='w-400px'>
+          <li key={index}>
             <CustomCard post={post} />
           </li>
         ))}
