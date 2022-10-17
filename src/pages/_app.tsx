@@ -3,6 +3,7 @@ import "windi.css"
 import { MantineProvider } from "@mantine/core"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
+import { NotificationsProvider } from "@mantine/notifications"
 
 // reqct-query の設定。
 // fetchが失敗しても、retryしない
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           fontFamily: "Verdana, sans-serif",
         }}
       >
-        <Component {...pageProps} />
+        <NotificationsProvider limit={2}>
+          <Component {...pageProps} />
+        </NotificationsProvider>
         <ReactQueryDevtools></ReactQueryDevtools>
       </MantineProvider>
     </QueryClientProvider>
