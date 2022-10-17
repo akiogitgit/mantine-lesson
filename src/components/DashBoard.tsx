@@ -54,6 +54,7 @@ export const Dashboard = () => {
                 "avatar",
                 "card",
                 "performance",
+                "crypto",
               ].map(path => (
                 <Menu.Item
                   key={path}

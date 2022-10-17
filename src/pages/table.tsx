@@ -35,7 +35,7 @@ const TableDemo: NextPage = () => {
         highlightOnHover
         withBorder
         withColumnBorders
-        className='mx-auwithColumnBorderso max-w-600px'
+        className='mx-auto max-w-600px'
         my='xl'
       >
         <thead>
