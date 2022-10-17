@@ -1,6 +1,6 @@
 import { Layout } from "../components/Layout"
 import { BrandGithub } from "tabler-icons-react"
-import { useDisclosure } from "@mantine/hooks"
+import { useDisclosure, useToggle } from "@mantine/hooks"
 import { Button, Dialog, Group, Stack, Text, TextInput } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 
@@ -9,16 +9,20 @@ const Hooks = () => {
     onOpen: () => console.log("open"),
     onClose: () => console.log("close"),
   })
+  const [buttonColor, toggleButtonColor] = useToggle(["teal", "pink"])
 
   return (
     <Layout>
       <Stack align='center'>
         <Button onClick={setOpened.toggle}>Toggle dialog</Button>
-        <Button color='green' onClick={setOpened.open}>
+        <Button color='teal' onClick={setOpened.open}>
           Open dialog
         </Button>
         <Button color='orange' onClick={setOpened.close}>
           Close dialog
+        </Button>
+        <Button color={buttonColor} onClick={() => toggleButtonColor()}>
+          Toggle Color
         </Button>
       </Stack>
       <Dialog
