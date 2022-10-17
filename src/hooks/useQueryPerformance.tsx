@@ -1,8 +1,10 @@
+import { showNotification } from "@mantine/notifications"
 import { SupabaseRealtimePayload } from "@supabase/supabase-js"
 import { useEffect } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import { Performance } from "../types/performance"
 import { supabase } from "../utils/supabase"
+import { DatabaseExport } from "tabler-icons-react"
 
 export const useQueryPerformance = () => {
   const queryClient = useQueryClient()
@@ -23,9 +25,18 @@ export const useQueryPerformance = () => {
           user_id: payload.new.user_id,
           level: payload.new.level,
         })
+        console.log("update!!!!!!!!!!")
+        showNotification({
+          title: "Someone updated the performances table",
+          message: payload.new.created_at,
+          icon: <DatabaseExport />, // 拡張子をtsxに
+          color: "teal",
+          autoClose: 2000,
+        })
       })
       .on("DELETE", (payload: SupabaseRealtimePayload<Performance>) => {
         queryClient.setQueryData(["performance"], null)
+        console.log("delete!!!!!!!!!!")
       })
       .subscribe()
 
