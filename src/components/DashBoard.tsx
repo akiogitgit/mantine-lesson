@@ -25,6 +25,24 @@ import {
 import { NextLink } from "@mantine/next"
 import { Settings } from "tabler-icons-react"
 
+const menus = [
+  "button",
+  "group",
+  "grid",
+  "table",
+  "form",
+  "multi-select",
+  "fetch-data",
+  "dialog",
+  "modal",
+  "avatar",
+  "card",
+  "performance",
+  "crypto",
+  "notification",
+  "hooks",
+]
+
 export const Dashboard = () => {
   const signOut = useCallback(() => {
     supabase.auth.signOut()
@@ -41,22 +59,7 @@ export const Dashboard = () => {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>UI Components</Menu.Label>
-              {[
-                "button",
-                "group",
-                "grid",
-                "table",
-                "form",
-                "multi-select",
-                "fetch-data",
-                "dialog",
-                "modal",
-                "avatar",
-                "card",
-                "performance",
-                "crypto",
-                "notification",
-              ].map(path => (
+              {menus.map(path => (
                 <Menu.Item
                   key={path}
                   component={NextLink}
@@ -75,27 +78,17 @@ export const Dashboard = () => {
               <Button>Toggle menu</Button>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Label>Application</Menu.Label>
-              <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
-              <Menu.Item icon={<IconMessageCircle size={14} />}>
-                Messages
-              </Menu.Item>
-              <Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
-              <Menu.Item
-                icon={<IconSearch size={14} />}
-                rightSection={<IconArrowsLeftRight size={14} />}
-              >
-                Search
-              </Menu.Item>
-              <Menu.Divider />
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
-                Transfer my data
-              </Menu.Item>
-              ,
-              <Menu.Item color='red' icon={<IconTrash size={14} />}>
-                Delete my account
-              </Menu.Item>
+              <Menu.Label>UI Components</Menu.Label>
+              {menus.map(path => (
+                <Menu.Item
+                  key={path}
+                  component={NextLink}
+                  href={`/${path}`}
+                  icon={<IconMessageCircle size={16} />}
+                >
+                  <Text transform='capitalize'>{path}</Text>
+                </Menu.Item>
+              ))}
             </Menu.Dropdown>
           </Menu>
         </div>
