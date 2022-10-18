@@ -5,6 +5,8 @@ import {
   useHover,
   useIdle,
   useInterval,
+  useMouse,
+  useMove,
   useToggle,
 } from "@mantine/hooks"
 import {
@@ -17,6 +19,7 @@ import {
   Paper,
   Stack,
   Text,
+  Code,
   TextInput,
 } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
@@ -46,6 +49,11 @@ const Hooks = () => {
   const { hovered, ref: hoveredRef } = useHover()
   const idle = useIdle(1000) // ユーザーが1秒何もしなければtrue
   const idle2 = useIdle(1000, { events: ["click", "touchstart"] }) // ユーザーが1秒クリックしないとtrue
+
+  const { ref: mouseRef, x: mouseX, y: mouseY } = useMouse()
+
+  const [moveValue, setMoveValue] = useState({ x: 0.2, y: 0.6 })
+  const { ref: moveRef, active } = useMove(setMoveValue)
 
   return (
     <Layout>
@@ -97,6 +105,28 @@ const Hooks = () => {
             src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/0.8507517698515727.png`}
           />
         </Indicator>
+
+        <div ref={mouseRef} className='bg-emerald-100 h-180px w-300px relative'>
+          <p className='m-auto h-30px top-0 right-0 bottom-0 left-0 w-120px absolute'>
+            x: {mouseX}, y: {mouseY}
+          </p>
+        </div>
+
+        <div ref={moveRef} className='bg-gray-100 h-120px w-400px relative'>
+          <BrandGithub
+            className={`cursor-pointer h-6 text-pink-700 w-6 absolute`}
+            style={{
+              left: `calc(${moveValue.x * 100}% - 12px)`,
+              top: `calc(${moveValue.y * 100}% - 12px)`,
+            }}
+          />
+        </div>
+        <Text>
+          Values{" "}
+          <Code>{`{ x: ${Math.round(moveValue.x * 100)}, y: ${Math.round(
+            moveValue.y * 100,
+          )} }`}</Code>
+        </Text>
       </Stack>
 
       <Dialog
