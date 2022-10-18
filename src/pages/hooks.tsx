@@ -1,11 +1,12 @@
 import { Layout } from "../components/Layout"
 import { Blockquote, BrandGithub } from "tabler-icons-react"
-import { useDisclosure, useInterval, useToggle } from "@mantine/hooks"
+import { useDisclosure, useHover, useInterval, useToggle } from "@mantine/hooks"
 import {
   Button,
   Dialog,
   Group,
   Kbd,
+  Paper,
   Stack,
   Text,
   TextInput,
@@ -34,6 +35,8 @@ const Hooks = () => {
     return num
   }, [])
 
+  const { hovered, ref: hoveredRef } = useHover()
+
   return (
     <Layout>
       <Stack align='center'>
@@ -55,6 +58,10 @@ const Hooks = () => {
         >
           {interval.active ? "Stop" : "Start"} counting
         </Button>
+
+        <Paper shadow='lg' p='xl' ref={hoveredRef}>
+          {hovered ? "hover!" : "put mouse..."}
+        </Paper>
       </Stack>
 
       <Dialog
