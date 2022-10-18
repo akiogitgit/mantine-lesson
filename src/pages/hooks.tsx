@@ -21,6 +21,9 @@ import {
   Text,
   Code,
   TextInput,
+  Progress,
+  Collapse,
+  Loader,
 } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import { useCallback, useEffect, useState } from "react"
@@ -81,6 +84,7 @@ const Hooks = () => {
           {hovered ? "hover!" : "put mouse..."}
         </Paper>
         <Indicator
+          label='move'
           size={16}
           offset={7}
           position='bottom-end'
@@ -127,6 +131,28 @@ const Hooks = () => {
             moveValue.y * 100,
           )} }`}</Code>
         </Text>
+
+        <Collapse in={active}>
+          <Loader variant='bars' size='lg' color='pink' />
+        </Collapse>
+        <div>
+          <Progress
+            my='md'
+            className='w-80'
+            color='teal'
+            radius='lg'
+            value={moveValue.x * 100}
+            animate
+          />
+          <Progress
+            my='md'
+            className='w-80'
+            color='red'
+            radius='lg'
+            value={moveValue.y * 100}
+            animate
+          />
+        </div>
       </Stack>
 
       <Dialog
