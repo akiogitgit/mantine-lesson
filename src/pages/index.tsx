@@ -1,15 +1,11 @@
 import type { NextPage } from "next"
-import Head from "next/head"
-import Link from "next/link"
 import { Layout } from "../components/Layout"
-import { Button, Center, Stack } from "@mantine/core"
+import { Button, Center } from "@mantine/core"
 import useStore from "../store"
 import { useEffect } from "react"
 import { supabase } from "../utils/supabase"
 import { Dashboard } from "../components/DashBoard"
 import { Auth } from "../components/Auth"
-import { useQueryTodos } from "../hooks/useQueryTodos"
-import { FetchTodos } from "../components/FechTodos"
 
 const Home: NextPage = () => {
   const session = useStore(state => state.session)
@@ -30,20 +26,8 @@ const Home: NextPage = () => {
     alert(`submit${string}`)
   }
 
-  const onSubmit = () => {}
-
   return (
     <Layout>
-      <div className=''></div>
-      <form action='' onSubmit={() => submit("aaaaa")}>
-        <input type='text' />
-        <Button type='submit' color='indigo' size='xl' radius='xl'>
-          Button
-        </Button>
-        <button className='bg-black font-bold text-white py-3 px-6'>
-          Button
-        </button>
-      </form>
       <Center>{session ? <Dashboard /> : <Auth />}</Center>
       <Center mt={100}>
         {count}
