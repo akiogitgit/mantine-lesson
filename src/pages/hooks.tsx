@@ -1,10 +1,18 @@
 import { Layout } from "../components/Layout"
 import { Blockquote, BrandGithub } from "tabler-icons-react"
-import { useDisclosure, useHover, useInterval, useToggle } from "@mantine/hooks"
 import {
+  useDisclosure,
+  useHover,
+  useIdle,
+  useInterval,
+  useToggle,
+} from "@mantine/hooks"
+import {
+  Avatar,
   Button,
   Dialog,
   Group,
+  Indicator,
   Kbd,
   Paper,
   Stack,
@@ -36,6 +44,8 @@ const Hooks = () => {
   }, [])
 
   const { hovered, ref: hoveredRef } = useHover()
+  const idle = useIdle(1000) // ユーザーが1秒何もしなければtrue
+  const idle2 = useIdle(1000, { events: ["click", "touchstart"] }) // ユーザーが1秒クリックしないとtrue
 
   return (
     <Layout>
@@ -62,6 +72,31 @@ const Hooks = () => {
         <Paper shadow='lg' p='xl' ref={hoveredRef}>
           {hovered ? "hover!" : "put mouse..."}
         </Paper>
+        <Indicator
+          size={16}
+          offset={7}
+          position='bottom-end'
+          color={idle ? "red" : "green"}
+          withBorder
+        >
+          <Avatar
+            size='lg'
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/0.10945995604803072.jfif`}
+          />
+        </Indicator>
+        <Indicator
+          label='click'
+          size={16}
+          offset={7}
+          position='bottom-end'
+          color={idle2 ? "red" : "green"}
+          withBorder
+        >
+          <Avatar
+            size='lg'
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/avatars/0.8507517698515727.png`}
+          />
+        </Indicator>
       </Stack>
 
       <Dialog
